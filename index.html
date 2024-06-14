@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html dir="rtl">
+  <head>
+    <title>نتيجة الدور الأول للعام الدراسي 2023/2024</title>
+    <style>
+      /* Add your CSS styles here */
+
+      .container { 
+        width: 90%; margin: 0 auto; font-family: Arial, sans-serif; 
+      } 
+      .student-info { 
+          text-align: center; margin-bottom: 20px; 
+      }
+       .student-name { 
+          font-size: 24px; margin-bottom: 10px; 
+      } 
+      .class { 
+          font-size: 18px; color: #666; margin-bottom: 10px;
+      } 
+
+      .note { 
+        padding: 10px;
+        text-align: center; 
+        color: white;
+        background-color: red;
+      }
+   
+      .grades-table { 
+          border-collapse: collapse; width: 100%; 
+      } 
+      .grades-table th, .grades-table td { 
+          border: 1px solid #ddd; padding: 10px; text-align: center; 
+      } 
+      .grades-table th { 
+          background-color: #4CAF50; font-weight: bold; color: white;
+      } 
+      .grades-table tr:nth-child(even) { 
+          background-color: #f2f2f2; 
+      } 
+        
+      form {
+        grid-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 10em 1em 1em 1em;
+      }
+
+      input[type=text] {
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      #result{
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <Center>
+      <img src="logo.png">
+      <h2>المديرية العامة للتربية والتعليم بمحافظة الداخلية</h2>
+      <h1>مدرسة خالد بن الوليد للتعليم الأساسي</h1>
+      <h2>العام الدراسي 2023/2024</h2>
+      <h1 style="color: red;">نتائج الدور الأول</h1>
+      <br>
+
+      <form onsubmit="getMarks(); return false;">
+        <input type="text" id="studentNumber" name="studentNumber" required placeholder="أدخل الرقم المدرسي للطالب" />
+        <button type="submit">أظهر نتيجة الطالب</button>
+      </form>
+
+    </Center>
+    <br>
+    <div id="result"></div>
+
+
+
+
+    <script>
+      function getMarks() {
+
+        const studentNumberInput = document.getElementById("studentNumber");
+        const resultElement = document.getElementById("result");
+        const loadingIndicator = document.getElementById("loading-indicator");
+        const notFoundMessage = document.getElementById("not-found-message");
+
+        var studentNumber = document.getElementById("studentNumber").value;
+        var url = "https://script.google.com/macros/s/AKfycbwhP9Jn9BHHG0kBBno1PiMMGC1V74lW6p2mMhnLPz4boxGHM4hooCtpRUMNrCPIhOtz/exec?studentNumber=" + studentNumber;
+
+        // Show loading indicator
+        loadingIndicator.style.display = "block";
+        notFoundMessage.style.display = "none";
+        resultElement.innerHTML = "";
+
+        studentNumberInput
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            // Hide loading indicator and show result
+            loadingIndicator.style.display = "none";
+            if(data.marks!=="N/A"){
+              document.getElementById("result").innerHTML = data.marks;
+            }else{
+              notFoundMessage.style.display = "block";
+            }
+
+          });
+
+      }
+    </script>
+
+    <!-- Add the following HTML elements to your page -->
+    <div id="loading-indicator" style="display: none;">جاري جلب نتيجة الطالب، انتظر لحظات...</div>
+    <div id="not-found-message" style="display: none;">لا يوجد طالب بهذه البيانات، من فضلك أعد المحاولة.</div>
+
+
+
+  </body>
+</html>
